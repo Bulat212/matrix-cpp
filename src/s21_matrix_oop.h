@@ -35,11 +35,18 @@ public:
     S21Matrix& operator=(const S21Matrix& other);                   // assignment operator overload
     double& operator()(int row, int col);                          // index operator overload
     double operator()(int row, int col) const;
-    S21Matrix& operator+=(const S21Matrix& other);                            
     S21Matrix operator+(const S21Matrix& other);
-    S21Matrix& operator-=(const S21Matrix& other);
     S21Matrix operator-(const S21Matrix& other);
-    
+    S21Matrix operator*(const S21Matrix& other);
+    S21Matrix operator*(const double number);
+
+    S21Matrix& operator*=(const S21Matrix& other);
+    S21Matrix& operator*=(const double number);
+    S21Matrix& operator+=(const S21Matrix& other);
+    S21Matrix& operator-=(const S21Matrix& other);
+    bool operator==(const S21Matrix& other);
+
+
     bool EqMatrix(const S21Matrix& other);
     void SumMatrix(const S21Matrix& other);
     void SubMatrix(const S21Matrix& other);
@@ -52,6 +59,10 @@ public:
     
     void print();
     void fill();
+    int GetCols()const;
+    int GetRows()const;
+    void SetCols(int new_cols);
+    void SetRows(int new_rows);
 };
 
 #endif

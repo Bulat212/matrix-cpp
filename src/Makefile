@@ -2,4 +2,7 @@
 
 all: 
 	g++ main.cc matrix.cc operacii.cc operations.cc
-	leaks -atExit -- ./a.out
+	./a.out
+
+test:
+	g++ tests/*.cc *.cc -lgtest -lgtest_main -pthread

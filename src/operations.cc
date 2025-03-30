@@ -1,6 +1,84 @@
-#include "matrix.h"
+#include "s21_matrix_oop.h"
 #include <math.h>
 
+int S21Matrix::GetCols()const{
+  return cols_;
+}
+
+int S21Matrix::GetRows()const{
+  return rows_;
+}
+
+void S21Matrix::SetCols(int new_cols){
+  if(new_cols<0){
+    throw std::logic_error("Колонок меньше нуля");
+  }
+
+  double** temp = new double*[rows_];
+  for (int i = 0; i < rows_; i++)
+  {
+    temp[i] = new double[new_cols];
+  }
+  
+  for (int i = 0; i < rows_; i++)
+  {
+    for (int j = 0; j < new_cols; j++)
+    {
+    if(j<cols_){
+      temp[i][j] = matrix_[i][j];
+    }
+    else {
+      temp[i][j] = 0;
+    }
+    }
+  }
+
+  for (int i = 0; i < rows_; i++)
+    {
+        delete[] matrix_[i];
+    }
+    delete[] matrix_;
+
+    matrix_=temp;
+    cols_= new_cols;
+
+  
+}
+
+void S21Matrix::SetRows(int new_rows) {
+  if(new_rows<0){
+    throw std::logic_error("Строчек меньше нуля");
+  }
+  
+  double** temp = new double*[new_rows];
+  for (int i = 0; i < new_rows; i++)
+  {
+    temp[i] = new double[cols_];
+  }
+  
+  for (int i = 0; i < new_rows; i++)
+  {
+    for (int j = 0; j < cols_; j++)
+    {
+    if(i<rows_){
+      temp[i][j] = matrix_[i][j];
+    }
+    else {
+      temp[i][j] = 0;
+    }
+    }
+  }
+
+  for (int i = 0; i < rows_; i++)
+    {
+        delete[] matrix_[i];
+    }
+    delete[] matrix_;
+
+    matrix_=temp;
+    rows_=new_rows;
+
+}
 
 
 
@@ -30,7 +108,7 @@ bool S21Matrix::EqMatrix(const S21Matrix& other){
 void S21Matrix::SumMatrix(const S21Matrix& other) {
   
     if (!EqSize(*this, other)) {
-        throw std::logic_error("Размеры не равны");
+      throw std::logic_error("no");
     }
 
     for (int i = 0; i < rows_; i++) {
@@ -69,17 +147,18 @@ void S21Matrix::MulMatrix(const S21Matrix& other) {
   if (cols_!= other.rows_){
     throw std::logic_error("Количество столбцов не совпадает количеству столбцов");
   }
-    
-  double temp = 0.0;
+  S21Matrix result(rows_, other.cols_);
+
   for (int i = 0; i < rows_; i++) {
     for (int j = 0; j < other.cols_; j++) {
+        double temp = 0.0;
       for (int k = 0; k < cols_; k++) {
         temp += matrix_[i][k] * other.matrix_[k][j];
       }
-      matrix_[i][j] = temp;
-      temp = 0.0;
+      result.matrix_[i][j] = temp;
     }
   }
+  *this = std::move(result);
 
 }
 

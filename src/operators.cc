@@ -1,4 +1,4 @@
-#include "matrix.h"
+#include "s21_matrix_oop.h"
 
 
 S21Matrix S21Matrix::operator+(const S21Matrix& other){
@@ -15,12 +15,17 @@ S21Matrix S21Matrix::operator-(const S21Matrix& other){
 }
 
 double& S21Matrix::operator()(int row, int col){
-    
+    if(row<0 || col<0 || row>=rows_ || col>=cols_){
+        throw std::logic_error("Строка или столбец меньше нуля");
+    }
     return matrix_[row][col];
 }
 
 double S21Matrix::operator()(int row, int col) const{
     
+    if(row<0 || col<0 || row>=rows_ || col>=cols_){
+        throw std::logic_error("Строка или столбец меньше нуля");
+    }
     return matrix_[row][col];
 }
 
@@ -39,3 +44,47 @@ S21Matrix& S21Matrix::operator=(S21Matrix&& other){
     return *this;
 }
 
+bool S21Matrix::operator==(const S21Matrix& other){
+
+    return EqMatrix(other);
+}
+
+S21Matrix& S21Matrix::operator+=(const S21Matrix& other){
+
+    SumMatrix(other);
+
+    return *this;
+}
+
+S21Matrix& S21Matrix::operator-=(const S21Matrix& other){
+
+    SubMatrix(other);
+
+    return *this;
+}
+
+S21Matrix& S21Matrix::operator*=(const S21Matrix& other){
+
+    MulMatrix(other);
+
+    return *this;
+}
+
+
+
+S21Matrix S21Matrix::operator*(const S21Matrix& other){
+    S21Matrix result(*this);
+    result.MulMatrix(other);
+    return result;
+}
+
+S21Matrix S21Matrix::operator*(const double number){
+    S21Matrix result(*this);
+    result.MulNumber(number);
+    return result;
+}
+
+S21Matrix& S21Matrix::operator*=(const double number){
+    MulNumber(number);
+    return *this;
+}
